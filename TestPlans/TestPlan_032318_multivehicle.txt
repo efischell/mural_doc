@@ -1,0 +1,138 @@
+Test Plan for multi-vehicle experiment: March 23 2018
+
+Vehicles: Quokka, Wombat, Platypus
+
+__________________________________________________
+Load at WHOI:
+* 2 x vehicles
+* Black rolling case
+* Laptop bag
+* Big and small lubells
+* 
+__________________________________________________
+Key parameters:
+
+ip address: 
+* wombat tail - 192.168.1.
+* quokka tail - 192.168.1.
+* platypus tail - 192.168.1.
+* payloads: check through router.  
+  > ssh mituser@192.168.1.?, pwd mitmit
+* find ip for a payload:
+  - open a browser (type 192.168.1.1)
+  - uname admin, pwd ??
+
+
+
+___________________________________________________
+Unload and set up
+___________________________________________________
+* Unload vehicles and equipment
+* Plug in sandshark router
+* Setup windows and linux laptops
+* Turn on and ssh into 3 x AUVs
+> ssh auv@192.168.1.29
+(pwd auv)
+* Check battery state- if any AUVs low, begin charging and start with other vehicles
+* Check radios
+* Gopros on AUVs (if desired)
+* Buoys on AUVs
+* Update payloads missions-lamss with new code
+
+________________________________________________________
+Compass calibrations
+________________________________________________________
+
+* Run compass calibration on Platypus and Wombat
+
+Power on payloads using windows laptop or commandline.  For command line:
+> ssh auv@192.168.1.29
+> SomaSend –target mcpd –name circuit.0 –value true
+
+Open up ncv -> ahrs, check compass state
+> ncv
+(scroll up to ahrs- it is not visible at start, use up key to find)
+(go to ahrs, -, compass, look at the values.  Turn the vehicle and see if there is the usual settling problem)
+
+Go to a location between beams on the dock. Run the compass calibration:
+
+1) Start ncv and navigate to the ahrs role rawmag, (ahrs,-,rawmag).  With the vehicle level (pitch and roll about 0), spin vehicle slowly in yae through one full rotation.  Note the direction that maximizes magX under ahrs,-,rawmag in ncv.  This is the reference direction.
+
+2) Start calibration:
+> SomaSend -target ahrs -name cmd.startCal -value true
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true
+
+Rotate 90 degrees in heading, run:
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true
+
+Rotate 90 degrees in heading, run:
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true
+
+Rotate 90 degrees in heading, run:
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true
+
+Rotate 90 degrees in heading, increase pitch to +45 degrees.  Vehicle should be back at original heading but with a 45 degree pitch.
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true
+
+Rotate 90 degrees in heading, maintaining +45 degree pitch.
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true
+
+Rotate 90 degrees in heading, maintaining +45 degree pitch
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true
+
+Rotate 90 degrees in heading, maintaining +45 degree pitch.
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true
+
+Rotate 90 degrees in heading, change pitch to -45 degrees.  Vehicle should be back at original heading but with a -45 degree pitch.
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true
+
+Rotate 90 degrees in heading, maintaining -45 degree pitch.
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true
+
+Rotate 90 degrees in heading, maintaining -45 degree pitch
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true
+
+Rotate 90 degrees in heading, maintaining -45 degree pitch.
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true
+
+You can put the vehicle back down now.
+
+3) End Calibration:
+> SomaSend -target ahrs -name cmd.startCal -value false
+
+4) Look at magErr under ahrs,-,status:
+> ncv
+(navigate to ahrs, -, status)
+
+Wait for magErr to settle.
+
+4) End data collection:
+> SomaSend -target ahrs -name cmd.startCal -value false
+
+5) Check magErr and compass values:
+> ncv
+(navigate to ahrs, -, status to look at magErr)
+(navigation to ahrs, -, compass to look at compass reading.  Reading should immediately settle when the vehicle is turned in heading- if compass cal is bad, it will take 5+ seconds.  It should take less than a second.)
+
+____________________________________________________________________________
+Single-vehicle mission- check that everything is working
+____________________________________________________________________________
+For each vehicle, do the following:
+1) Turn on vehicle and payload.  Boat ready to go as chase and source.
+
+2) SSH into payload:
+> ssh mituser@192.168.1.?
+(pwd mitmit)
+
+3) Load a "do nothing" mission on the windows laptop to the vehicle.
+
+4) runtime launch: (replacing modemid 
+> ./runtime_launch.sh active_shallow_sandshark no_acomms modemid=5 sandshark_deploy wave_switch
+
+5) Deploy vehicle, chase with boat.  Confirm the following:
+* Default deploy works correctly with modemid flag
+* Mode switching works for relative autonomy to beacon
+* Return works
+
+____________________________________________________________________________
+3-vehicle mission
