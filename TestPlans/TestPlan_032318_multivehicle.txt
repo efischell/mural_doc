@@ -22,10 +22,16 @@ __________________________________________________
 Key parameters:
 
 ip address: 
+<<<<<<< HEAD
 * wombat tail - 192.168.1.30
 * quokka tail - 192.168.1.29
 * platypus tail - 192.168.1.31
 * payloads: check through router.  
+=======
+* quokka tail - 192.168.1.29
+* wombat tail - 192.168.1.30
+* platypus tail - 192.168.1.31
+* payloads: check through router, or possibly use quokka.local, wombat.local, platypus.local
   > ssh mituser@192.168.1.?, pwd mitmit
 * find ip for a payload:
   - connect to sandshark router (dhcp, pwd BLUE213fin)
@@ -45,7 +51,6 @@ ssh-ing: from tail to payload:
 
 
 
-
 ___________________________________________________
 Unload and set up
 ___________________________________________________
@@ -59,6 +64,10 @@ ___________________________________________________
 * Check radios
 * Gopros on AUVs (if desired)
 * Buoys on AUVs
+
+* Update payloads missions-lamss with new code
+* Update payloads lamss-internal with new code
+* Update payloads piUSBL with new code
 
 ___________________________________________________
 Payload setup and checks
