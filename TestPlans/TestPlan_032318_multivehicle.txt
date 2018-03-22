@@ -1,6 +1,15 @@
 Test Plan for multi-vehicle experiment: March 23 2018
 
 Vehicles: Quokka, Wombat, Platypus
+Location: MIT Sailing Pavilion
+
+missions-lamss: auv sandshark, cruise charles
+
+Waveforms: 
+1: dynamic loiter 
+2: dynamic line
+3: dynamic line
+4: return
 
 __________________________________________________
 Load at WHOI:
@@ -13,14 +22,27 @@ __________________________________________________
 Key parameters:
 
 ip address: 
-* wombat tail - 192.168.1.
-* quokka tail - 192.168.1.
-* platypus tail - 192.168.1.
+* wombat tail - 192.168.1.30
+* quokka tail - 192.168.1.29
+* platypus tail - 192.168.1.31
 * payloads: check through router.  
   > ssh mituser@192.168.1.?, pwd mitmit
 * find ip for a payload:
+  - connect to sandshark router (dhcp, pwd BLUE213fin)
   - open a browser (type 192.168.1.1)
-  - uname admin, pwd ??
+  - uname admin, pwd password
+  - click on attached devices
+  - payloads should show up here!  Usually 192.168.1.4 or similar.
+
+ssh-ing: across sandshark network:
+> ssh auv@192.168.1.29
+(pwd auv)
+> ssh mituser@192.168.1.4
+(pwd mitmit)
+
+ssh-ing: from tail to payload:
+> ssh 10.0.7.66 (I think... use ifconfig to confirm)
+
 
 
 
@@ -37,8 +59,36 @@ ___________________________________________________
 * Check radios
 * Gopros on AUVs (if desired)
 * Buoys on AUVs
-* Update payloads missions-lamss with new code
 
+___________________________________________________
+Payload setup and checks
+___________________________________________________
+* Connect a computer with wireless internet to the router via ethernet cable.  Share the wireless connection with the local area connection on ethernet.  This will provide internet access to the vehicles.
+* Update payloads missions-lamss with new code:
+1) SSH in to payload:
+> ssh mituser@192.168.1.4 (or whatever the ip is)
+2) update missions-lamss
+> cd missions-lamss/
+> git pull
+
+* Put vehicle and router outside, so vehicle has GPS.  Confirm launches work properly, and acoustics works
+1) Check that arrays are correctly plugged in on all vehicles- squeeze test.
+2) Wait for CSAC to come up.  You can check ntp:
+> watch ntpq -p
+
+The CSAC should show up as a time source.
+
+3) run a runtime launch, make sure all config is correct, launch runs and that acoustic data looks good.  
+> cd missions-lamss
+> cd logs/
+> mkdir runtime/
+> ./cruise_config.sh charles
+> cdm
+> ./runtime_launch.sh active_shallow_sandshark no_acomms modemid=5 sandshark_deploy wave_switch
+> cdl
+> ls iMCC1608FS_sandshark
+
+Make sure new acoustics files are being written to the iMCC1608FS_sandshark directory.  You can use missions-lamss/scripts/tetra_spectram_bin.py or tetra_specgram.py to look at the output, or copy a file over and look at in matlab.  Make sure voltages are being written on all 5 channels.
 ________________________________________________________
 Compass calibrations
 ________________________________________________________
@@ -136,3 +186,9 @@ For each vehicle, do the following:
 
 ____________________________________________________________________________
 3-vehicle mission
+____________________________________________________________________________
+0) One beacon on the dock, one on the boat.  Dock beacon should be off execept to use for emergency return. Radio check.  2-3 people on the boat!
+1) Launch all 3 vehicles.  They should go into a loiter
+2) Boat out with beacon.  Once in place, switch to "1".  Allow vehicles to register and modify behavior for 5 minutes.
+3) Switch to "2".  Allow vehicles to register and modify behavior for 5 minutes.
+4) Switch off boat beacon, turn dock beacon to "4".  AUVs should return to dock.
