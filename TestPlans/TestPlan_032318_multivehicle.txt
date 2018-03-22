@@ -22,12 +22,6 @@ __________________________________________________
 Key parameters:
 
 ip address: 
-<<<<<<< HEAD
-* wombat tail - 192.168.1.30
-* quokka tail - 192.168.1.29
-* platypus tail - 192.168.1.31
-* payloads: check through router.  
-=======
 * quokka tail - 192.168.1.29
 * wombat tail - 192.168.1.30
 * platypus tail - 192.168.1.31
@@ -47,7 +41,8 @@ ssh-ing: across sandshark network:
 (pwd mitmit)
 
 ssh-ing: from tail to payload:
-> ssh 10.0.7.66 (I think... use ifconfig to confirm)
+> ssh 10.207.210.101 (Erin's SandSharks I think... use ifconfig to confirm)
+> ssh 10.0.7.66 (Henrik's SandShark I think... use ifconfig to confirm)
 
 
 
@@ -68,6 +63,9 @@ ___________________________________________________
 * Update payloads missions-lamss with new code
 * Update payloads lamss-internal with new code
 * Update payloads piUSBL with new code
+* Create log directory in missions-lamss/logs/ called sandshark_iMCC1608FS
+* Copy relevant yaml configs from piUSBL/interfaces/yaml_configs and piUSBL/filters/yaml_configs and make sure they are correctly setup
+* Double-check cruise/charles/cruise.def and auv/sandshark/sandshark_plugs/bhv_deploy_wave_switch.plug
 
 ___________________________________________________
 Payload setup and checks
@@ -81,7 +79,7 @@ ___________________________________________________
 > git pull
 
 * Put vehicle and router outside, so vehicle has GPS.  Confirm launches work properly, and acoustics works
-1) Check that arrays are correctly plugged in on all vehicles- squeeze test.
+1) Check that arrays are correctly plugged in on all vehicles- squeeze test with iMCC1608FS_cont.
 2) Wait for CSAC to come up.  You can check ntp:
 > watch ntpq -p
 
@@ -95,9 +93,9 @@ The CSAC should show up as a time source.
 > cdm
 > ./runtime_launch.sh active_shallow_sandshark no_acomms modemid=5 sandshark_deploy wave_switch
 > cdl
-> ls iMCC1608FS_sandshark
+> ls sandshark_iMCC1608FS
 
-Make sure new acoustics files are being written to the iMCC1608FS_sandshark directory.  You can use missions-lamss/scripts/tetra_spectram_bin.py or tetra_specgram.py to look at the output, or copy a file over and look at in matlab.  Make sure voltages are being written on all 5 channels.
+Make sure new acoustics files are being written to the sandshark_iMCC1608FS directory.  You can use missions-lamss/scripts/tetra_spectram_bin.py or tetra_specgram.py to look at the output, or copy a file over and look at in matlab.  Make sure voltages are being written on all 5 channels.
 ________________________________________________________
 Compass calibrations
 ________________________________________________________
