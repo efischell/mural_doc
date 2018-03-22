@@ -38,6 +38,8 @@ ___________________________________________________
 * Gopros on AUVs (if desired)
 * Buoys on AUVs
 * Update payloads missions-lamss with new code
+* Update payloads lamss-internal with new code
+* Update payloads piUSBL with new code
 
 ________________________________________________________
 Compass calibrations
