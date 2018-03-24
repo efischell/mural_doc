@@ -1,6 +1,6 @@
 Debrief Notes:
 
- - biggest issue is that vehicle has enormous trouble turning to starboard
+ - biggest issue is that vehicle has enormous trouble turning to starboard (~40-50 m turn radius, vs ~10 m turn radius to port)
     - possibly due to tether drag and pressure on fin?
     - possibly due to bad mag calibration when turning clockwise?
     - possibly due to low speed?
