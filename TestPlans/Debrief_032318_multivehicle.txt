@@ -28,7 +28,7 @@ Platypus
 ------
 Quokka
 ------
- - appears to have an issue with its CSAC not syncinc - have to open bottle and investigate
+ - appears to have an issue with its CSAC not syncing - have to open bottle and investigate
     - possibly due to disconnected/bad wiring on antenna?
  
 ------
