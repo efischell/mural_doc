@@ -1,4 +1,9 @@
-Debrief Notes:
+Debrief for multi-vehicle experiment: March 23 2018
+
+--------
+Platypus
+--------
+ - successfully runs and commanded by backseat - all working!
 
  - biggest issue is that vehicle has enormous trouble turning to starboard (~40-50 m turn radius, vs ~10 m turn radius to port)
     - possibly due to tether drag and pressure on fin?
@@ -17,3 +22,14 @@ Debrief Notes:
   
   - vehicle estimate of its speed is quite a bit higher than its actual speed, qualitatvely, according to acoustics
     - this could be due to buoy drag?
+
+------
+Quokka
+------
+ - appears to have an issue with its CSAC not syncinc - have to open bottle and investigate
+    - possibly due to disconnected/bad wiring on antenna?
+ 
+------
+Wombat
+------
+ - appears to have an issue with power to its hydrophones - have to open bottle and investigate
