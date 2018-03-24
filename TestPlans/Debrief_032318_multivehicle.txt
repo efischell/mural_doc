@@ -13,7 +13,9 @@ Platypus
     
  - acoustic issues - generally seems to be very stable
     - all signals have similar offsets, but there is still a small delay not accounted for due to transmission of signals through the beacon
-    - particles can fall into local maxima, leading to degeneracy - fix this by setting a certain proportion (~25%) of least-weighted particles to always be reseeded every iteration
+        - fix - last run of the day has the vehicle directly under the beacon - we can use this track to determine this delay
+    - particles can fall into local maxima, leading to degeneracy 
+        - fix - set a certain proportion (~25%) of least-weighted particles to always be reseeded every iteration
         - calculate std. devs. only for non-reseeded particles
     - signal 2 (11-9 kHz 20 ms down-chirp) and signal 5 (14-18 kHz 30 ms up-chirp) are often confused by the system, possibly due to lower frequency resonances
         - fix - we only have 4 signals to choose from on the beacons, so remove this fifth signal
