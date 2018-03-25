@@ -11,6 +11,12 @@ Platypus
     - possibly due to low speed?
     - possibly due to river currents?
     
+ - problems with deployment are essentially due to control issues, not sensing/acoustics
+    - depth control is bad - desired depth of 1.5 m, but actual depth of 3.5-4 m
+    - heading control is bad
+    - see included images
+    - need to tune PID gains - possibly due to payload length?
+    
  - acoustic issues - generally seems to be very stable
     - all signals have similar offsets, but there is still a small delay not accounted for due to transmission of signals through the beacon
         - fix - last run of the day has the vehicle directly under the beacon - we can use this track to determine this delay
