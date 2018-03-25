@@ -12,9 +12,9 @@ Platypus
     - possibly due to river currents?
     
  - problems with deployment are essentially due to control issues, not sensing/acoustics
-    - depth control is bad - desired depth of 1.5 m, but actual depth of 3.5-4 m
-    - heading control is bad
-    - see included images
+    - depth control is bad - desired depth of 1.5 m, but actual depth of 3.5-4 m - seems to be in altitude following mode? Is this a frontseat setting?
+    - heading control is bad - consistent offset between desired and actual
+    - see included images - shows depth (des, nav [red], alt [grn]), heading, speed, and roll
     - need to tune PID gains - possibly due to payload length?
     
  - acoustic issues - generally seems to be very stable
