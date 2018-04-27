@@ -30,6 +30,7 @@ Platypus
   
   - vehicle estimate of its speed is quite a bit higher than its actual speed, qualitatvely, according to acoustics
     - this could be due to buoy drag?
+    - speed is approximately 0.725 times slower than it thinks it is
 
 ------
 Quokka
