@@ -106,7 +106,7 @@ Compass calibrations
 
 Power on payloads using windows laptop or commandline.  For command line:
 > ssh auv@192.168.1.29
-> SomaSend –target mcpd –name circuit.0 –value true
+> SomaSend -target mcpd -name circuit.0 -value true
 
 Open up ncv -> ahrs, check compass state
 > ncv
@@ -157,7 +157,7 @@ Rotate 90 degrees in heading, maintaining -45 degree pitch.
 You can put the vehicle back down now.
 
 3) End Calibration:
-> SomaSend -target ahrs -name cmd.startCal -value false
+> SomaSend -target ahrs -name cmd.takeCalPoint -value false
 
 4) Look at magErr under ahrs,-,status:
 > ncv
