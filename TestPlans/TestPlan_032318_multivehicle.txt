@@ -96,15 +96,15 @@ The CSAC should show up as a time source.
 > ls sandshark_iMCC1608FS
 
 Make sure new acoustics files are being written to the sandshark_iMCC1608FS directory.  You can use missions-lamss/scripts/tetra_spectram_bin.py or tetra_specgram.py to look at the output, or copy a file over and look at in matlab.  Make sure voltages are being written on all 5 channels.
-________________________________________________________
-Compass calibrations
-________________________________________________________
 
+___________________________________________________
+Compass calibrations
+---------------------------------------------------
 * Run compass calibration on Platypus and Wombat
 
 Power on payloads using windows laptop or commandline.  For command line:
 > ssh auv@192.168.1.29
-> SomaSend –target mcpd –name circuit.0 –value true
+> SomaSend -target mcpd -name circuit.0 -value true
 
 Open up ncv -> ahrs, check compass state
 > ncv
@@ -155,7 +155,7 @@ Rotate 90 degrees in heading, maintaining -45 degree pitch.
 You can put the vehicle back down now.
 
 3) End Calibration:
-> SomaSend -target ahrs -name cmd.startCal -value false
+> SomaSend -target ahrs -name cmd.takeCalPoint -value false
 
 4) Look at magErr under ahrs,-,status:
 > ncv
