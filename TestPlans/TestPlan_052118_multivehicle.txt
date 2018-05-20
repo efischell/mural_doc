@@ -62,9 +62,9 @@ Unload and set up
 	- git remote set-url origin mituser@192.168.1.100:~/lamss (missions-lamss) (lamss-internal) (lamss-shared) (piUSBL)
 	- git pull
 	- build if necessary
-  - make sure that date/time is correct!!! otherwise builds can fail badly, and files will have to be removed/re-pulled:
-    - git rm *file*
-    - git reset --HARD
+  	- make sure that date/time is correct!!! otherwise builds can fail badly, and files will have to be removed/re-pulled:
+    		- git rm *file*
+    		- git reset --HARD
 
 * Code prep on vehicles:
 	- Create log directory in missions-lamss/logs/runtime called sandshark_iMCC1608FS
