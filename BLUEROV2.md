@@ -1,12 +1,16 @@
 # BlueROV2
 
-## Network configuration
+## Configuration
+
+### Network
 
 * companion computer (RaspberryPi): pi@192.168.2.2 / kangaroo.local
-
 * payload computer (upBoard): mituser@192.168.2.3 / joey.local
-
 * sonar (mb2250): 192.168.2.4
+
+## Notes 
+
+* there is an air passage between the MEH and the battery compartment through the power cable; make sure to close and plug the battery compartment before pulling a vaccuum on the MEH
 
 ## Tests
 
@@ -32,10 +36,14 @@ re-attach to the mavlink screen session
 screen -r <pid>
 ```
 
-
 run the status command and look for the `SCALED_PRESSURE` and `SCALED_PRESSURE_2` messages
 ``` sh
 MANUAL> status
 1316: SCALED_PRESSURE {time_boot_ms : 341314, press_abs : 975.212341309, press_diff : 16.7780456543, temperature : 3658}
 1316: SCALED_PRESSURE2 {time_boot_ms : 341314, press_abs : 1004.27966309, press_diff : -8.97031211853, temperature : 2353}
 ```
+
+## See also
+
+* [MAVProxy commands](https://ardupilot.github.io/MAVProxy/html/uav_configuration/system.html)
+* [MAVLink messages](https://mavlink.io/en/messages/common.html)
