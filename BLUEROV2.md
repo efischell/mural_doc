@@ -2,6 +2,10 @@
 
 ## Configuration
 
+### Companion computer
+
+The companion computer's configuration interface can be accessed via the [web interface](http://192.168.2.2:2770)
+
 ### Network
 
 * companion computer (RaspberryPi): pi@192.168.2.2 / kangaroo.local
