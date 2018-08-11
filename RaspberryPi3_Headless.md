@@ -19,6 +19,12 @@
 > systemctl set-default graphical.target --force
 ```
 
+## Remove unnecessary processes
+### Terminal commands:
+```sh
+> sudo apt-get purge brltty
+```
+
 ## Removing unnecessary startup processes
 ### Rename the following .startup files to .backup files, located in /etc/xdg/autostart/:
 * a11y-profile
