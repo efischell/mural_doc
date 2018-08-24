@@ -13,3 +13,10 @@ service ntp restart
 service fake-hwclock restart
 ```
 Note that the script above requires `ntpdate` which is not present in the payload bottle images by default.
+
+## Connecting to WPA Network
+
+```sh
+sudo nmcli device wifi connect <SSID> password <password>
+iwconfig
+```
