@@ -20,3 +20,13 @@ Note that the script above requires `ntpdate` which is not present in the payloa
 sudo nmcli device wifi connect <SSID> password <password>
 iwconfig
 ```
+
+## Remounting Frontseat Computer
+
+In order to modify config files in /opt/bluefin/config/ you must remount the drive using"
+
+```sh
+sudo mount -o rw,remount /dev/sda1
+```
+
+edit the files using vi, then reboot the frontseat computer.
