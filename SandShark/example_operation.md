@@ -1,0 +1,215 @@
+# Example Operational Checklist for SandShark Deployments
+
+Test Plan for multi-vehicle experiment: May 21 2018
+
+Vehicles: Platypus, Quokka, Wombat  
+Location: MIT Sailing Pavilion  
+
+missions-lamss: auv sandshark, cruise charles  
+
+Waveforms:   
+1: dynamic line  
+2: dynamic loiter  
+3: dynamic return  
+4: emergency abort  
+
+__________________________________________________
+Load at WHOI
+--------------------------------------------------
+* None
+
+__________________________________________________
+Key parameters
+--------------------------------------------------
+ip address: 
+* quokka tail   - 192.168.1.29
+* wombat tail   - 192.168.1.30  
+* platypus tail - 192.168.1.31  
+* payloads: check through router, or possibly use quokka.local, wombat.local, platypus.local
+  > ssh mituser@192.168.1.?  
+  pwd mitmit  
+* find ip for a payload:
+  - connect to sandshark router (dhcp, pwd BLUE213fin)
+  - open a browser (type 192.168.1.1)
+  - uname admin, pwd password
+  - click on attached devices
+  - payloads should show up here!  Usually 192.168.1.4 or similar.
+
+ssh-ing: across sandshark network:
+> ssh auv@192.168.1.29  
+(pwd auv)  
+> ssh mituser@10.207.210.101  
+(pwd mitmit)  
+
+ssh-ing: from tail to payload:
+> ssh 10.207.210.101  
+> ssh 10.0.7.66  
+
+___________________________________________________
+Unload and set up
+---------------------------------------------------
+* Unload vehicles and equipment
+* Plug in sandshark router
+* Setup windows and linux laptops
+* Turn on and ssh into 3 x AUVs
+> ssh auv@192.168.1.29  
+(pwd auv)  
+* Check battery state- if any AUVs low, begin charging and start with other vehicles
+* Check radios
+* Gopros on AUVs (if desired)
+* Buoys on AUVs
+* Setup GPS units
+* Check ballast/trim
+
+* Update git repos on vehicles:
+	- git remote set-url origin mituser@192.168.1.100:~/lamss (missions-lamss) (lamss-internal) (lamss-shared) (piUSBL)
+	- git pull
+	- build if necessary
+  	- make sure that date/time is correct!!! otherwise builds can fail badly, and files will have to be removed/re-pulled:
+    		- git rm *file*
+    		- git reset --HARD
+
+* Code prep on vehicles:
+	- Create log directory in missions-lamss/logs/runtime called sandshark_iMCC1608FS
+	- Comment out BHV_MinAltitude in missions-lamss/auv/auv_plugs/bhv_auv_safety.plug
+	- Change mark_variable to GPS_UPDATE_RECEIVED_FAKE (and set GPS surfacing time) in missions-lamss/auv/auv_plugs/bhv_misc.plug
+	- Comment out activate_at_depth behavior in missions-lamss/auv/sandshark/bhv.meta
+	- Copy vehicle-relevant yaml configs from piUSBL/interfaces/yaml_configs and piUSBL/filters/yaml_configs and make sure they are correctly setup
+	- Double-check cruise/charles/cruise.def and auv/sandshark/sandshark_plugs/bhv_deploy_wave_switch.plug
+
+___________________________________________________
+Payload setup and checks
+---------------------------------------------------
+* Connect a computer with wireless internet to the router via ethernet cable.  Share the wireless connection with the local area connection on ethernet.  This will provide internet access to the vehicles.
+* Update payloads missions-lamss with new code:
+1) SSH in to payload:
+> ssh mituser@192.168.1.4 (or whatever the ip is)
+2) update missions-lamss
+> cd missions-lamss/
+> git pull
+
+* Put vehicle and router outside, so vehicle has GPS.  Confirm launches work properly, and acoustics works
+1) Check that arrays are correctly plugged in on all vehicles- squeeze test with iMCC1608FS_cont.
+2) Wait for CSAC to come up.  You can check ntp:
+> watch ntpq -p  
+
+The CSAC should show up as a time source.
+
+3) run a runtime launch, make sure all config is correct, launch runs and that acoustic data looks good.  
+> cd missions-lamss  
+> cd logs/  
+> mkdir runtime/  
+> ./cruise_config.sh charles  
+> cdm  
+> ./runtime_launch.sh active_shallow_sandshark no_acomms modemid=5 sandshark_deploy wave_switch  
+> cdl  
+> ls sandshark_iMCC1608FS  
+
+Make sure new acoustics files are being written to the sandshark_iMCC1608FS directory.  You can use missions-lamss/scripts/tetra_spectram_bin.py or tetra_specgram.py to look at the output, or copy a file over and look at in matlab.  Make sure voltages are being written on all 5 channels.
+
+___________________________________________________
+Compass calibrations
+---------------------------------------------------
+* Run compass calibration on Platypus and Wombat
+
+Power on payloads using windows laptop or commandline.  For command line:
+> ssh auv@192.168.1.29  
+> SomaSend -target mcpd -name circuit.0 -value true  
+
+Open up ncv -> ahrs, check compass state
+> ncv  
+(scroll up to ahrs- it is not visible at start, use up key to find)
+(go to ahrs, -, compass, look at the values.  Turn the vehicle and see if there is the usual settling problem)
+
+Go to a location between beams on the dock. Run the compass calibration:
+
+1) Start ncv and navigate to the ahrs role rawmag, (ahrs,-,rawmag).  With the vehicle level (pitch and roll about 0), spin vehicle slowly in yae through one full rotation.  Note the direction that maximizes magX under ahrs,-,rawmag in ncv.  This is the reference direction.
+
+2) Start calibration:
+> SomaSend -target ahrs -name cmd.startCal -value true  
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true  
+
+Rotate 90 degrees in heading, run:
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true  
+
+Rotate 90 degrees in heading, run:
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true  
+
+Rotate 90 degrees in heading, run:
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true  
+
+Rotate 90 degrees in heading, increase pitch to +45 degrees.  Vehicle should be back at original heading but with a 45 degree pitch.
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true  
+
+Rotate 90 degrees in heading, maintaining +45 degree pitch.
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true  
+
+Rotate 90 degrees in heading, maintaining +45 degree pitch
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true  
+
+Rotate 90 degrees in heading, maintaining +45 degree pitch.
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true  
+
+Rotate 90 degrees in heading, change pitch to -45 degrees.  Vehicle should be back at original heading but with a -45 degree pitch.
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true  
+
+Rotate 90 degrees in heading, maintaining -45 degree pitch.
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true  
+
+Rotate 90 degrees in heading, maintaining -45 degree pitch
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true  
+
+Rotate 90 degrees in heading, maintaining -45 degree pitch.
+> SomaSend -target ahrs -name cmd.takeCalPoint -value true  
+
+You can put the vehicle back down now.
+
+3) End Calibration:
+> SomaSend -target ahrs -name cmd.takeCalPoint -value false  
+
+4) Look at magErr under ahrs,-,status:
+> ncv  
+(navigate to ahrs, -, status)
+
+Wait for magErr to settle.
+
+4) End data collection:
+> SomaSend -target ahrs -name cmd.startCal -value false
+
+5) Check magErr and compass values:
+> ncv  
+(navigate to ahrs, -, status to look at magErr)  
+(navigation to ahrs, -, compass to look at compass reading.  Reading should immediately settle when the vehicle is turned in heading- if compass cal is bad, it will take 5+ seconds.  It should take less than a second.)
+
+___________________________________________________
+Single-vehicle mission- check that everything is working
+---------------------------------------------------
+For each vehicle, do the following:
+1) Turn on vehicle and payload.  Boat ready to go as chase and source.
+
+2) SSH into payload:
+> ssh mituser@192.168.1.?  
+(pwd mitmit)  
+
+3) Load a "do nothing" mission on the windows laptop to the vehicle.
+
+4) launch mode-switching piUSBL:
+> rm nohup.out  
+> nohup python PyEPSSMoCaB_mobile_multisig.py &  
+
+5) runtime launch: (replacing modemid)
+> ./runtime_launch.sh active_shallow_sandshark no_acomms modemid=5 sandshark_deploy wave_switch
+
+6) Deploy vehicle, chase with boat.  Confirm the following:
+* Default deploy works correctly with modemid flag
+* Mode switching works for relative autonomy to beacon
+* Return works
+
+___________________________________________________
+3-vehicle mission
+---------------------------------------------------
+0) One beacon on the dock, one on the boat.  Dock beacon should be off execept to use for emergency return. Radio check.  2-3 people on the boat!
+1) Launch all 3 vehicles.  They should go into a loiter
+2) Boat out with beacon.  Once in place, switch to "1".  Allow vehicles to register and modify behavior for 5 minutes.
+3) Switch to "2".  Allow vehicles to register and modify behavior for 5 minutes.
+4) Switch off boat beacon, turn dock beacon to "4".  AUVs should return to dock.
