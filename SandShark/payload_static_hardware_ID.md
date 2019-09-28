@@ -8,6 +8,7 @@ tail /proc/cpuinfo
 
 outputting something like:
 
+```sh
 Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm crc32 
 CPU implementer	: 0x41
 CPU architecture: 7
@@ -18,6 +19,7 @@ CPU revision	: 4
 Hardware	: BCM2835
 Revision	: a22082
 Serial		: 00000000abcdfegh
+```
 
 A script has been written in '/etc/rc.local' that will set the hostname by referencing the serial number, as shown below.
 
